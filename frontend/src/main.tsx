@@ -5,6 +5,7 @@ import App from './App';
 import { ToastProvider } from './components/ui/Toast';
 import './styles/global.css';
 import './styles/landing.css';
+import './styles/app.css';
 
 // The single-file preview build uses hash routing; normal builds use real paths.
 const Router = import.meta.env.VITE_HASH_ROUTER === 'true' ? HashRouter : BrowserRouter;

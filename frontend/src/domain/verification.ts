@@ -15,3 +15,16 @@ export function summarizeChecks(checks: VerificationCheck[]): VerificationSummar
   const finished = counts.verified + counts.failed;
   return { total: checks.length, counts, passRate: finished === 0 ? null : Math.round((counts.verified / finished) * 100) };
 }
+
+/**
+ * One health value for a set of checks. Worst result wins. "Verified" requires every check to have passed,
+ * so a mix of passed and never-run checks reads as Not verified, never as Verified.
+ */
+export function worstStatus(summary: VerificationSummary): VerificationStatus {
+  const { counts, total } = summary;
+  if (total === 0) return 'not_verified';
+  if (counts.failed > 0) return 'failed';
+  if (counts.warning > 0) return 'warning';
+  if (counts.pending > 0) return 'pending';
+  return counts.verified === total ? 'verified' : 'not_verified';
+}

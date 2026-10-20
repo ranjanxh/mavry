@@ -27,6 +27,15 @@ export const projectRoutes = {
   history: (projectId: string) => `/app/projects/${projectId}/history`,
 } as const;
 
+/** The project list with an optional prefilled search, or the create wizard opened. */
+export const projectsUrl = (opts: { q?: string; create?: boolean } = {}): string => {
+  const params = new URLSearchParams();
+  if (opts.q) params.set('q', opts.q);
+  if (opts.create) params.set('new', '1');
+  const qs = params.toString();
+  return qs ? `${ROUTES.projects}?${qs}` : ROUTES.projects;
+};
+
 export interface PlannedRoute {
   path: string;
   title: string;
@@ -38,8 +47,6 @@ export const PLANNED_ROUTES: PlannedRoute[] = [
   { path: ROUTES.login, title: 'Log in', summary: 'Demo authentication with a one-click demo workspace. Not production security.' },
   { path: ROUTES.signup, title: 'Sign up', summary: 'Mock registration with validation, then a short first-run setup.' },
   { path: ROUTES.docs, title: 'Published docs preview', summary: 'How the documentation looks to a reader, separate from the authoring app.' },
-  { path: ROUTES.app, title: 'Workspace overview', summary: 'Projects, activity, verification summary, and what needs attention.' },
-  { path: ROUTES.projects, title: 'Projects', summary: 'Search, filter, sort, and a three-step create-project flow.' },
   { path: '/app/projects/:projectId', title: 'Project overview', summary: 'Health, repository, latest run, and quick actions for one project.' },
   { path: '/app/projects/:projectId/pages/:pageId', title: 'Documentation editor', summary: 'Page tree, Markdown editor with preview, save states, and verification context.' },
   { path: '/app/projects/:projectId/api', title: 'API reference', summary: 'Endpoints, schemas, examples, and OpenAPI import.' },
